@@ -1,0 +1,52 @@
+{
+  "name": "note-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "dev": "vite",
+    "format": "prettier --check .",
+    "format:fix": "pnpm format --write",
+    "lint": "oxlint",
+    "lint:fix": "pnpm lint --fix",
+    "prepare": "husky",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react-swc": "^3.8.1",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "oxlint": "^0.16.1",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vite-plugin-oxlint": "^1.2.3",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "pnpm lint:fix",
+      "pnpm format:fix"
+    ]
+  }
+}
