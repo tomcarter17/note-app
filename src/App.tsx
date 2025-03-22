@@ -1,14 +1,20 @@
-import { v4 as uuidv4 } from "uuid";
 import styles from "./App.module.css";
 import { useSessionNotes } from "api/hooks/useSessionNotes";
 import Note from "components/Note";
 import { useCreateNote } from "api/hooks/useCreateNote";
-
-const SESSION_ID = uuidv4();
+import { clearSessionId, getSessionId } from "utils/session";
+import { useState } from "react";
 
 export default function App() {
-  const { data: notes = [], isLoading } = useSessionNotes(SESSION_ID);
-  const { mutate: createNote } = useCreateNote(SESSION_ID);
+  const [sessionId, setSessionId] = useState(getSessionId());
+
+  const { data: notes = [], isLoading } = useSessionNotes(sessionId);
+  const { mutate: createNote } = useCreateNote(sessionId);
+
+  const createNewSession = () => {
+    clearSessionId();
+    setSessionId(getSessionId());
+  };
 
   return (
     <div className={styles.app}>
@@ -17,6 +23,7 @@ export default function App() {
       </header>
 
       <aside className={styles.actionBar}>
+        <button onClick={createNewSession}>Create new session</button>
         <button onClick={() => createNote()}>Add note</button>
       </aside>
 
