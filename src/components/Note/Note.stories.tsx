@@ -18,7 +18,6 @@ export const Default: Story = {
   args: {
     id: 1,
     initialBody: "This is a note",
-    onDelete: () => {},
   },
 };
 
@@ -26,6 +25,5 @@ export const LongText: Story = {
   args: {
     id: 1,
     initialBody: "This is a note with long text that should wrap",
-    onDelete: () => {},
   },
 };
