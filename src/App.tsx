@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import styles from "./App.module.css";
 import { useSessionNotes } from "api/hooks/useSessionNotes";
-import Note from "Note";
+import Note from "components/Note";
 import { useCreateNote } from "api/hooks/useCreateNote";
 
 const SESSION_ID = uuidv4();
