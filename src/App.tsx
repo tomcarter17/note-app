@@ -43,7 +43,12 @@ export default function App() {
         {!isLoading && notes.length > 0 && (
           <div className={styles.noteGrid}>
             {notes.map((note) => (
-              <Note key={note.id} id={note.id} initialBody={note.body} />
+              <Note
+                key={note.id}
+                id={note.id}
+                initialBody={note.body}
+                sessionId={sessionId}
+              />
             ))}
           </div>
         )}
