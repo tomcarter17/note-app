@@ -9,7 +9,7 @@ const handlers = [
   }),
   http.post<never, { body: string }>("**/notes", async ({ request }) => {
     const { body } = await request.json();
-    return HttpResponse.json({ body });
+    return HttpResponse.json({ id: 4, body });
   }),
 ];
 

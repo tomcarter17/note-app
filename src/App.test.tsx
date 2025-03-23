@@ -65,4 +65,20 @@ describe("App", () => {
       screen.getByText("Insert your note content here!"),
     ).toBeInTheDocument();
   });
+
+  it("should correctly update the note", async () => {
+    mockServer.use(
+      http.put("**/notes/**", () => {
+        return HttpResponse.json({ id: 1, body: "Note 1 has been updated" });
+      }),
+    );
+
+    render(
+      <QueryClientProvider client={client}>
+        <App />
+      </QueryClientProvider>,
+    );
+
+    await userEvent.type(screen.getByText("Note 1"), " has been updated");
+  });
 });
