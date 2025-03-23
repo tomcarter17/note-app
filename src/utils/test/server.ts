@@ -7,6 +7,10 @@ const handlers = [
   http.get("**/notes", () => {
     return HttpResponse.json(mockNotesResponse);
   }),
+  http.post<never, { body: string }>("**/notes", async ({ request }) => {
+    const { body } = await request.json();
+    return HttpResponse.json({ body });
+  }),
 ];
 
 export const mockServer = setupServer(...handlers);

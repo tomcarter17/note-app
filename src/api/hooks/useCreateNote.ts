@@ -10,13 +10,16 @@ export const useCreateNote = (sessionId: string) => {
   return useMutation({
     mutationFn: () =>
       responseWrapper(
-        createRequest<Note[]>({
+        createRequest<Note>({
           method: "post",
           url: `${sessionId}/notes`,
           data: { body: DEFAULT_NOTE_BODY },
         }),
       ),
-    onSuccess: () =>
-      client.invalidateQueries({ queryKey: ["notes", sessionId] }),
+    onSuccess: (note) =>
+      client.setQueryData(["notes", sessionId], (old: Note[]) => [
+        ...old,
+        note,
+      ]),
   });
 };
