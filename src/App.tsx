@@ -1,5 +1,5 @@
 import styles from "./App.module.css";
-import { useSessionNotes } from "api/hooks/useSessionNotes";
+import { useNotes } from "api/hooks/useNotes";
 import Note from "components/Note";
 import { useCreateNote } from "api/hooks/useCreateNote";
 import { clearSessionId, getSessionId } from "utils/session";
@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function App() {
   const [sessionId, setSessionId] = useState(getSessionId());
 
-  const { data: notes = [], isLoading } = useSessionNotes(sessionId);
+  const { data: notes = [], isLoading } = useNotes(sessionId);
   const { mutate: createNote } = useCreateNote(sessionId);
 
   const createNewSession = () => {
@@ -43,7 +43,12 @@ export default function App() {
         {!isLoading && notes.length > 0 && (
           <div className={styles.noteGrid}>
             {notes.map((note) => (
-              <Note key={note.id} id={note.id} initialBody={note.body} />
+              <Note
+                key={note.id}
+                id={note.id}
+                initialBody={note.body}
+                sessionId={sessionId}
+              />
             ))}
           </div>
         )}

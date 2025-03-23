@@ -18,6 +18,7 @@ export const Default: Story = {
   args: {
     id: 1,
     initialBody: "This is a note",
+    sessionId: "123",
   },
 };
 
@@ -25,5 +26,6 @@ export const LongText: Story = {
   args: {
     id: 1,
     initialBody: "This is a note with long text that should wrap",
+    sessionId: "123",
   },
 };

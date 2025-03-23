@@ -17,6 +17,8 @@
 }
 
 .toolbar {
+  background-color: white;
+  border: none;
   box-sizing: border-box;
   display: flex;
   justify-content: flex-end;

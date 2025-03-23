@@ -1,16 +1,38 @@
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import styles from "./Note.module.css";
+import { useUpdateNote } from "api/hooks/useUpdateNote";
+import { useDebounce } from "use-debounce";
 
 interface NoteProps {
   id: number;
   initialBody: string;
+  sessionId: string;
 }
 
-export default function Note({ initialBody }: NoteProps) {
-  const [body, setBody] = useState(initialBody);
+const SAVE_INTERVAL = 2000;
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
+export default function Note({ id, initialBody, sessionId }: NoteProps) {
+  const [body, setBody] = useState(initialBody);
+  const [debouncedBody] = useDebounce(body, SAVE_INTERVAL);
+
+  const { mutate: saveNote, isPending: isSaving } = useUpdateNote(
+    sessionId,
+    id,
+  );
+
+  const firstUpdate = useRef(true);
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    saveNote(debouncedBody);
+  }, [debouncedBody]);
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setBody(e.target.value);
+  };
 
   return (
     <article className={styles.container}>
@@ -19,6 +41,7 @@ export default function Note({ initialBody }: NoteProps) {
         onChange={handleChange}
         value={body}
       />
+      <div className={styles.toolbar}>{isSaving && <div>Saving...</div>}</div>
     </article>
   );
 }
