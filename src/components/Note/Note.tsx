@@ -13,10 +13,12 @@ export default function Note({ initialBody }: NoteProps) {
     setBody(e.target.value);
 
   return (
-    <div className={styles.container}>
-      <textarea className={styles.textArea} onChange={handleChange}>
-        {body}
-      </textarea>
-    </div>
+    <article className={styles.container}>
+      <textarea
+        className={styles.textArea}
+        onChange={handleChange}
+        value={body}
+      />
+    </article>
   );
 }
