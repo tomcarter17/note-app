@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import Note from "./Note";
+import { withQueryClient } from "utils/decorators";
 
 const meta = {
   title: "Note",
@@ -9,6 +10,7 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
+  decorators: [withQueryClient],
 } satisfies Meta<typeof Note>;
 
 export default meta;
