@@ -81,4 +81,26 @@ describe("App", () => {
 
     await userEvent.type(screen.getByText("Note 1"), " has been updated");
   });
+
+  it("should correctly tag a user when @ is typed", async () => {
+    render(
+      <QueryClientProvider client={client}>
+        <App />
+      </QueryClientProvider>,
+    );
+
+    await userEvent.type(screen.getByText("Note 1"), " @");
+
+    // User menu is open after typing @
+    expect(screen.getByText("first user")).toBeInTheDocument();
+    expect(screen.getByText("second user")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByText("first user"));
+
+    // The user menu should be closed after a user is selected
+    expect(screen.queryByText("first user")).not.toBeInTheDocument();
+    expect(screen.queryByText("second user")).not.toBeInTheDocument();
+
+    expect(screen.getByText("Note 1 @user1")).toBeInTheDocument();
+  });
 });

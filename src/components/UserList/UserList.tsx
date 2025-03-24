@@ -1,6 +1,12 @@
 import { useUsers } from "api/hooks/userUsers";
 import styles from "./UserList.module.css";
-export default function UserList() {
+import { User } from "types/user";
+
+interface UserListProps {
+  onSelect: (user: User) => void;
+}
+
+export default function UserList({ onSelect }: UserListProps) {
   const { data: users = [], isLoading } = useUsers();
 
   if (isLoading) {
@@ -10,7 +16,11 @@ export default function UserList() {
   return (
     <div className={styles.container}>
       {users.map((user) => (
-        <button key={user.username} className={styles.item}>
+        <button
+          key={user.username}
+          className={styles.item}
+          onClick={() => onSelect(user)}
+        >
           {user.first_name} {user.last_name}
         </button>
       ))}
