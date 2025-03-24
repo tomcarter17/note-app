@@ -2,6 +2,8 @@ import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import styles from "./Note.module.css";
 import { useUpdateNote } from "api/hooks/useUpdateNote";
 import { useDebounce } from "use-debounce";
+import UserList from "components/UserList";
+import { User } from "types/user";
 
 interface NoteProps {
   id: number;
@@ -14,6 +16,7 @@ const SAVE_INTERVAL = 2000;
 export default function Note({ id, initialBody, sessionId }: NoteProps) {
   const [body, setBody] = useState(initialBody);
   const [debouncedBody] = useDebounce(body, SAVE_INTERVAL);
+  const [isShowingUsers, setIsShowingUsers] = useState(false);
 
   const { mutate: saveNote, isPending: isSaving } = useUpdateNote(
     sessionId,
@@ -31,7 +34,17 @@ export default function Note({ id, initialBody, sessionId }: NoteProps) {
   }, [debouncedBody]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.includes("@")) {
+      setIsShowingUsers(true);
+    }
+
     setBody(e.target.value);
+  };
+
+  const handleSelectUser = (user: User) => {
+    setIsShowingUsers(false);
+    // This currently only works for the first @ mention
+    setBody(body.replace("@", `@${user.username} `));
   };
 
   return (
@@ -42,6 +55,7 @@ export default function Note({ id, initialBody, sessionId }: NoteProps) {
         value={body}
       />
       <div className={styles.toolbar}>{isSaving && <div>Saving...</div>}</div>
+      {isShowingUsers && <UserList onSelect={handleSelectUser} />}
     </article>
   );
 }
